@@ -14,61 +14,70 @@
         </header>
 
         <div class="form-section">
-            <!-- Keyword Section -->
-            <div class="section-card">
-                <h2>1. Select Keyword Category</h2>
-                <div class="category-buttons" id="categoryButtons"></div>
-            </div>
 
-            <div class="section-card" id="keywordSection" style="display:none;">
-                <h2>2. Select Keywords</h2>
-                <div class="keyword-actions">
-                    <button class="action-btn random-btn" onclick="randomKeywords()">
-                        <span class="btn-icon">🎲</span> Random Keywords
-                    </button>
-                    <button class="action-btn ai-btn" onclick="openAiModal()">
-                        <span class="btn-icon">✨</span> AI Suggest (Gemini)
-                    </button>
+            <!-- KEYWORD: Category + Keywords + Custom + AI in one compact card -->
+            <div class="section-card">
+                <div class="section-header" onclick="toggleSection('keywordContent')">
+                    <h2>1. Keywords</h2>
+                    <span class="toggle-icon" id="keywordContent-icon">▼</span>
                 </div>
-                <div class="keyword-chips" id="keywordChips"></div>
-                <div class="selected-keywords">
-                    <strong>Selected:</strong> <span id="selectedKeywords">None</span>
+                <div class="section-body open" id="keywordContent">
+                    <!-- Category Selection -->
+                    <label class="field-label">Category:</label>
+                    <div class="category-buttons" id="categoryButtons"></div>
+
+                    <!-- Keywords from category -->
+                    <div id="keywordSection" style="display:none;">
+                        <div class="keyword-actions">
+                            <button class="action-btn random-btn" onclick="randomKeywords()">
+                                <span class="btn-icon">🎲</span> Random
+                            </button>
+                            <button class="action-btn ai-btn" onclick="openAiModal()">
+                                <span class="btn-icon">✨</span> AI Suggest
+                            </button>
+                        </div>
+                        <div class="keyword-chips" id="keywordChips"></div>
+                    </div>
+
+                    <!-- Custom keyword -->
+                    <label class="field-label">Custom Keyword:</label>
+                    <div class="custom-keyword-input">
+                        <input type="text" id="customKeyword" placeholder="Type your own keyword and press Enter...">
+                        <button class="action-btn add-custom-btn" onclick="addCustomKeyword()">+</button>
+                    </div>
+                    <div class="custom-keyword-tags" id="customKeywordTags"></div>
+
+                    <!-- Selected display -->
+                    <div class="selected-keywords">
+                        <strong>Selected:</strong> <span id="selectedKeywords">None</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Custom Keyword Input -->
+            <!-- STYLE + MOOD + PALETTE in one compact card with dropdowns -->
             <div class="section-card">
-                <h2>2.1 Custom Keyword (Optional)</h2>
-                <p class="section-desc">Type your own keyword if you want something specific</p>
-                <div class="custom-keyword-input">
-                    <input type="text" id="customKeyword" placeholder="e.g. Autumn leaves in Vermont forest, Glacier Bay Alaska...">
-                    <button class="action-btn add-custom-btn" onclick="addCustomKeyword()">+ Add</button>
+                <div class="section-header" onclick="toggleSection('styleContent')">
+                    <h2>2. Style & Mood</h2>
+                    <span class="toggle-icon" id="styleContent-icon">▼</span>
                 </div>
-                <div class="custom-keyword-tags" id="customKeywordTags"></div>
+                <div class="section-body open" id="styleContent">
+                    <!-- Style -->
+                    <label class="field-label">Image Style:</label>
+                    <select id="styleSelect" class="select-input" onchange="selectedStyle = this.value"></select>
+
+                    <!-- Mood -->
+                    <label class="field-label">Mood:</label>
+                    <select id="moodSelect" class="select-input" onchange="selectedMood = this.value"></select>
+
+                    <!-- Color Palette -->
+                    <label class="field-label">Color Palette:</label>
+                    <select id="paletteSelect" class="select-input" onchange="selectedPalette = this.value"></select>
+                </div>
             </div>
 
-
-            <!-- Style Section -->
-            <div class="section-card">
-                <h2>3. Select Image Style</h2>
-                <div class="style-options" id="styleOptions"></div>
-            </div>
-
-            <!-- Mood Section -->
-            <div class="section-card">
-                <h2>4. Select Mood</h2>
-                <div class="mood-options" id="moodOptions"></div>
-            </div>
-
-            <!-- Color Palette Section -->
-            <div class="section-card">
-                <h2>5. Select Color Palette</h2>
-                <div class="palette-options" id="paletteOptions"></div>
-            </div>
-
-            <!-- Number of Images -->
-            <div class="section-card">
-                <h2>6. Number of Images</h2>
+            <!-- NUMBER OF IMAGES - compact -->
+            <div class="section-card compact-row">
+                <h2>3. Number of Images</h2>
                 <div class="number-input">
                     <button class="num-btn" onclick="changeCount(-1)">-</button>
                     <input type="number" id="imageCount" value="15" min="1" max="50">
@@ -80,17 +89,21 @@
             <button class="generate-btn" onclick="generateTemplate()">Generate Template</button>
         </div>
 
-
-        <!-- Gemini API Key Section -->
+        <!-- Gemini API Key Section (collapsible) -->
         <div class="section-card api-key-card">
-            <h2>Gemini API Settings</h2>
-            <p class="section-desc">Enter your Gemini API key to use AI keyword suggestions</p>
-            <div class="api-key-input">
-                <input type="password" id="geminiApiKey" placeholder="Enter your Gemini API Key">
-                <button class="action-btn save-key-btn" onclick="saveApiKey()">Save Key</button>
+            <div class="section-header" onclick="toggleSection('apiContent')">
+                <h2>Gemini API Settings</h2>
+                <span class="toggle-icon" id="apiContent-icon">►</span>
             </div>
-            <p class="api-key-status" id="apiKeyStatus"></p>
-            <p class="section-desc">Get your free API key at <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a></p>
+            <div class="section-body" id="apiContent">
+                <p class="section-desc">Enter your Gemini API key to use AI keyword suggestions</p>
+                <div class="api-key-input">
+                    <input type="password" id="geminiApiKey" placeholder="Enter your Gemini API Key">
+                    <button class="action-btn save-key-btn" onclick="saveApiKey()">Save</button>
+                </div>
+                <p class="api-key-status" id="apiKeyStatus"></p>
+                <p class="section-desc">Get your free API key at <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a></p>
+            </div>
         </div>
 
         <!-- Output Section -->
@@ -98,6 +111,7 @@
             <h2>Generated Template</h2>
             <div class="output-actions">
                 <button class="copy-btn" onclick="copyTemplate()">Copy to Clipboard</button>
+                <button class="reset-btn" onclick="resetAll()">🔄 Start Over</button>
             </div>
             <pre id="templateOutput"></pre>
         </div>

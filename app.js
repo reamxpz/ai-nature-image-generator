@@ -217,9 +217,9 @@ let selectedAiKeywords = [];
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     renderCategories();
-    renderStyles();
-    renderMoods();
-    renderPalettes();
+    renderStyleDropdown();
+    renderMoodDropdown();
+    renderPaletteDropdown();
     loadApiKey();
 
     // Enter key support for custom keyword input
@@ -289,6 +289,7 @@ function updateSelectedDisplay() {
 
 function renderStyles() {
     const container = document.getElementById('styleOptions');
+    if (!container) return;
     container.innerHTML = '';
     styleOptions.forEach(s => {
         const btn = document.createElement('button');
@@ -304,6 +305,7 @@ function renderStyles() {
 
 function renderMoods() {
     const container = document.getElementById('moodOptions');
+    if (!container) return;
     container.innerHTML = '';
     moodOptions.forEach(m => {
         const btn = document.createElement('button');
@@ -319,6 +321,7 @@ function renderMoods() {
 
 function renderPalettes() {
     const container = document.getElementById('paletteOptions');
+    if (!container) return;
     container.innerHTML = '';
     paletteOptions.forEach(p => {
         const btn = document.createElement('button');
@@ -338,6 +341,103 @@ function changeCount(delta) {
     if (val < 1) val = 1;
     if (val > 50) val = 50;
     input.value = val;
+}
+
+
+// ==========================================
+// DROPDOWN RENDER FUNCTIONS
+// ==========================================
+function renderStyleDropdown() {
+    const select = document.getElementById('styleSelect');
+    if (!select) return;
+    select.innerHTML = '';
+    styleOptions.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.name;
+        opt.textContent = `${s.name} — ${s.desc}`;
+        if (s.name === selectedStyle) opt.selected = true;
+        select.appendChild(opt);
+    });
+}
+
+function renderMoodDropdown() {
+    const select = document.getElementById('moodSelect');
+    if (!select) return;
+    select.innerHTML = '';
+    moodOptions.forEach(m => {
+        const opt = document.createElement('option');
+        opt.value = m;
+        opt.textContent = m;
+        if (m === selectedMood) opt.selected = true;
+        select.appendChild(opt);
+    });
+}
+
+function renderPaletteDropdown() {
+    const select = document.getElementById('paletteSelect');
+    if (!select) return;
+    select.innerHTML = '';
+    paletteOptions.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p;
+        opt.textContent = p;
+        if (p === selectedPalette) opt.selected = true;
+        select.appendChild(opt);
+    });
+}
+
+
+// ==========================================
+// COLLAPSIBLE SECTIONS
+// ==========================================
+function toggleSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    const icon = document.getElementById(sectionId + '-icon');
+    if (section.classList.contains('open')) {
+        section.classList.remove('open');
+        icon.textContent = '►';
+    } else {
+        section.classList.add('open');
+        icon.textContent = '▼';
+    }
+}
+
+
+// ==========================================
+// RESET ALL
+// ==========================================
+function resetAll() {
+    // Reset state
+    selectedCategory = null;
+    selectedKeywords = [];
+    customKeywords = [];
+    selectedStyle = "Premium Photorealistic Landscape Photography";
+    selectedMood = "Peaceful, Natural, Inspiring";
+    selectedPalette = "Natural Colors";
+    aiSuggestedKeywords = [];
+    selectedAiKeywords = [];
+
+    // Reset UI
+    renderCategories();
+    document.getElementById('keywordSection').style.display = 'none';
+    document.getElementById('keywordChips').innerHTML = '';
+    document.getElementById('customKeywordTags').innerHTML = '';
+    document.getElementById('customKeyword').value = '';
+    updateSelectedDisplay();
+
+    // Reset dropdowns
+    renderStyleDropdown();
+    renderMoodDropdown();
+    renderPaletteDropdown();
+
+    // Reset image count
+    document.getElementById('imageCount').value = 15;
+
+    // Hide output
+    document.getElementById('outputSection').style.display = 'none';
+
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 

@@ -19,85 +19,165 @@ body {
 
 header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
 header h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
     background: linear-gradient(90deg, #00d2ff, #3a7bd5);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
 }
 
 .subtitle {
     color: #8892b0;
-    font-size: 1rem;
+    font-size: 0.9rem;
 }
 
+/* ==========================================
+   Section Cards
+   ========================================== */
 .section-card {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
+    padding: 18px;
+    margin-bottom: 14px;
     backdrop-filter: blur(10px);
 }
 
-
 .section-card h2 {
-    font-size: 1.1rem;
-    margin-bottom: 15px;
+    font-size: 1rem;
     color: #64ffda;
+    margin: 0;
 }
 
-.category-buttons, .style-options, .mood-options, .palette-options {
+/* Collapsible Sections */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.section-header:hover h2 {
+    opacity: 0.8;
+}
+
+.toggle-icon {
+    color: #64ffda;
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+.section-body {
+    display: none;
+    padding-top: 14px;
+}
+
+.section-body.open {
+    display: block;
+}
+
+/* ==========================================
+   Field Labels
+   ========================================== */
+.field-label {
+    display: block;
+    font-size: 0.85rem;
+    color: #8892b0;
+    margin-bottom: 8px;
+    margin-top: 14px;
+}
+
+.field-label:first-child {
+    margin-top: 0;
+}
+
+/* ==========================================
+   Select Dropdowns
+   ========================================== */
+.select-input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid rgba(100, 255, 218, 0.3);
+    background: rgba(0, 0, 0, 0.4);
+    color: #ffffff;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364ffda' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+}
+
+.select-input:focus {
+    border-color: #64ffda;
+}
+
+.select-input option {
+    background: #16213e;
+    color: #ffffff;
+}
+
+/* ==========================================
+   Category & Keyword Buttons
+   ========================================== */
+.category-buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
 }
 
-.category-btn, .style-btn, .mood-btn, .palette-btn {
-    padding: 10px 18px;
+.category-btn {
+    padding: 8px 14px;
     border: 1px solid rgba(100, 255, 218, 0.3);
     background: rgba(100, 255, 218, 0.05);
     color: #ccd6f6;
-    border-radius: 25px;
+    border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
-.category-btn:hover, .style-btn:hover, .mood-btn:hover, .palette-btn:hover {
+.category-btn:hover {
     background: rgba(100, 255, 218, 0.15);
     border-color: #64ffda;
-    transform: translateY(-2px);
+    transform: translateY(-1px);
 }
 
-.category-btn.active, .style-btn.active, .mood-btn.active, .palette-btn.active {
+.category-btn.active {
     background: rgba(100, 255, 218, 0.25);
     border-color: #64ffda;
     color: #64ffda;
-    box-shadow: 0 0 15px rgba(100, 255, 218, 0.2);
+    box-shadow: 0 0 10px rgba(100, 255, 218, 0.2);
 }
 
 .keyword-chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 15px;
+    gap: 6px;
+    margin-bottom: 10px;
+    max-height: 150px;
+    overflow-y: auto;
+    padding: 4px 0;
 }
 
-
 .keyword-chip {
-    padding: 8px 14px;
+    padding: 6px 12px;
     border: 1px solid rgba(58, 123, 213, 0.4);
     background: rgba(58, 123, 213, 0.1);
     color: #a8b2d1;
-    border-radius: 20px;
+    border-radius: 16px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 0.85rem;
+    transition: all 0.2s ease;
+    font-size: 0.78rem;
 }
 
 .keyword-chip:hover {
@@ -109,159 +189,37 @@ header h1 {
     background: rgba(58, 123, 213, 0.35);
     border-color: #3a7bd5;
     color: #ffffff;
-    box-shadow: 0 0 10px rgba(58, 123, 213, 0.3);
-}
-
-.selected-keywords {
-    padding: 10px;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
-    font-size: 0.9rem;
-    color: #8892b0;
-}
-
-.selected-keywords span {
-    color: #64ffda;
-}
-
-.number-input {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    justify-content: center;
-}
-
-.num-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 1px solid rgba(100, 255, 218, 0.4);
-    background: rgba(100, 255, 218, 0.1);
-    color: #64ffda;
-    font-size: 1.4rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.num-btn:hover {
-    background: rgba(100, 255, 218, 0.25);
-}
-
-
-#imageCount {
-    width: 80px;
-    text-align: center;
-    padding: 10px;
-    border: 1px solid rgba(100, 255, 218, 0.3);
-    background: rgba(0, 0, 0, 0.3);
-    color: #ffffff;
-    border-radius: 8px;
-    font-size: 1.2rem;
-}
-
-.generate-btn {
-    display: block;
-    width: 100%;
-    padding: 16px;
-    background: linear-gradient(135deg, #00d2ff, #3a7bd5);
-    border: none;
-    border-radius: 12px;
-    color: #fff;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 10px;
-}
-
-.generate-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(0, 210, 255, 0.3);
-}
-
-.output-section {
-    margin-top: 30px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 20px;
-}
-
-.output-section h2 {
-    color: #64ffda;
-    margin-bottom: 15px;
-}
-
-.output-actions {
-    margin-bottom: 15px;
-}
-
-.copy-btn {
-    padding: 10px 20px;
-    background: rgba(100, 255, 218, 0.15);
-    border: 1px solid #64ffda;
-    color: #64ffda;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.copy-btn:hover {
-    background: rgba(100, 255, 218, 0.3);
-}
-
-#templateOutput {
-    background: rgba(0, 0, 0, 0.4);
-    padding: 20px;
-    border-radius: 8px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    font-size: 0.85rem;
-    line-height: 1.6;
-    color: #ccd6f6;
-    max-height: 600px;
-    overflow-y: auto;
-}
-
-@media (max-width: 600px) {
-    header h1 { font-size: 1.4rem; }
-    .section-card { padding: 15px; }
-    .category-btn, .style-btn, .mood-btn, .palette-btn { 
-        padding: 8px 14px; 
-        font-size: 0.8rem; 
-    }
-    .custom-keyword-input { flex-direction: column; }
-    .modal-content { margin: 10px; padding: 20px; }
+    box-shadow: 0 0 8px rgba(58, 123, 213, 0.3);
 }
 
 /* ==========================================
-   NEW: Action Buttons (Random & AI)
+   Action Buttons
    ========================================== */
 .keyword-actions {
     display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
+    gap: 8px;
+    margin-bottom: 10px;
     flex-wrap: wrap;
 }
 
 .action-btn {
-    padding: 10px 18px;
+    padding: 8px 14px;
     border: 1px solid rgba(100, 255, 218, 0.3);
     background: rgba(100, 255, 218, 0.05);
     color: #ccd6f6;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-size: 0.9rem;
+    font-size: 0.82rem;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
 }
 
 .action-btn:hover {
     background: rgba(100, 255, 218, 0.15);
     border-color: #64ffda;
-    transform: translateY(-2px);
+    transform: translateY(-1px);
 }
 
 .random-btn {
@@ -285,32 +243,32 @@ header h1 {
 }
 
 .btn-icon {
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 /* ==========================================
-   NEW: Custom Keyword Input
+   Custom Keyword Input
    ========================================== */
 .section-desc {
     color: #8892b0;
-    font-size: 0.85rem;
-    margin-bottom: 12px;
+    font-size: 0.82rem;
+    margin-bottom: 10px;
 }
 
 .custom-keyword-input {
     display: flex;
-    gap: 10px;
-    margin-bottom: 12px;
+    gap: 8px;
+    margin-bottom: 10px;
 }
 
 .custom-keyword-input input {
     flex: 1;
-    padding: 12px 16px;
+    padding: 10px 14px;
     border: 1px solid rgba(100, 255, 218, 0.3);
     background: rgba(0, 0, 0, 0.3);
     color: #ffffff;
     border-radius: 8px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     outline: none;
     transition: border-color 0.3s ease;
 }
@@ -320,33 +278,35 @@ header h1 {
 }
 
 .add-custom-btn {
-    white-space: nowrap;
     background: rgba(100, 255, 218, 0.15) !important;
     border-color: #64ffda !important;
     color: #64ffda !important;
+    font-size: 1.1rem !important;
+    padding: 8px 14px !important;
 }
 
 .custom-keyword-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px;
+    margin-bottom: 10px;
 }
 
 .custom-tag {
-    padding: 6px 12px;
+    padding: 5px 10px;
     background: rgba(100, 255, 218, 0.15);
     border: 1px solid #64ffda;
-    border-radius: 15px;
+    border-radius: 14px;
     color: #64ffda;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
 }
 
 .custom-tag .remove-tag {
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.9rem;
     opacity: 0.7;
     transition: opacity 0.2s;
 }
@@ -356,7 +316,157 @@ header h1 {
 }
 
 /* ==========================================
-   NEW: API Key Card
+   Selected Keywords Display
+   ========================================== */
+.selected-keywords {
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    font-size: 0.82rem;
+    color: #8892b0;
+    margin-top: 10px;
+}
+
+.selected-keywords span {
+    color: #64ffda;
+}
+
+/* ==========================================
+   Compact Row (Number of Images)
+   ========================================== */
+.compact-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+}
+
+.number-input {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.num-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid rgba(100, 255, 218, 0.4);
+    background: rgba(100, 255, 218, 0.1);
+    color: #64ffda;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.num-btn:hover {
+    background: rgba(100, 255, 218, 0.25);
+}
+
+#imageCount {
+    width: 60px;
+    text-align: center;
+    padding: 8px;
+    border: 1px solid rgba(100, 255, 218, 0.3);
+    background: rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+    border-radius: 8px;
+    font-size: 1.1rem;
+}
+
+/* ==========================================
+   Generate Button
+   ========================================== */
+.generate-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 6px;
+}
+
+.generate-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 210, 255, 0.3);
+}
+
+/* ==========================================
+   Output Section
+   ========================================== */
+.output-section {
+    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.output-section h2 {
+    color: #64ffda;
+    margin-bottom: 12px;
+    font-size: 1rem;
+}
+
+.output-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.copy-btn {
+    padding: 10px 18px;
+    background: rgba(100, 255, 218, 0.15);
+    border: 1px solid #64ffda;
+    color: #64ffda;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.85rem;
+}
+
+.copy-btn:hover {
+    background: rgba(100, 255, 218, 0.3);
+}
+
+.reset-btn {
+    padding: 10px 18px;
+    background: rgba(255, 107, 107, 0.15);
+    border: 1px solid #ff6b6b;
+    color: #ff6b6b;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.85rem;
+}
+
+.reset-btn:hover {
+    background: rgba(255, 107, 107, 0.3);
+    transform: translateY(-1px);
+}
+
+#templateOutput {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 16px;
+    border-radius: 8px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: #ccd6f6;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+/* ==========================================
+   API Key Card
    ========================================== */
 .api-key-card {
     border-color: rgba(168, 85, 247, 0.3);
@@ -364,18 +474,18 @@ header h1 {
 
 .api-key-input {
     display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: 8px;
+    margin-bottom: 8px;
 }
 
 .api-key-input input {
     flex: 1;
-    padding: 12px 16px;
+    padding: 10px 14px;
     border: 1px solid rgba(168, 85, 247, 0.3);
     background: rgba(0, 0, 0, 0.3);
     color: #ffffff;
     border-radius: 8px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     outline: none;
     transition: border-color 0.3s ease;
 }
@@ -391,8 +501,8 @@ header h1 {
 }
 
 .api-key-status {
-    font-size: 0.85rem;
-    margin-bottom: 8px;
+    font-size: 0.82rem;
+    margin-bottom: 6px;
 }
 
 .api-key-card a {
@@ -405,7 +515,7 @@ header h1 {
 }
 
 /* ==========================================
-   NEW: AI Modal
+   AI Modal
    ========================================== */
 .modal-overlay {
     position: fixed;
@@ -425,8 +535,8 @@ header h1 {
     background: linear-gradient(135deg, #1a1a2e, #16213e);
     border: 1px solid rgba(168, 85, 247, 0.3);
     border-radius: 16px;
-    padding: 30px;
-    max-width: 600px;
+    padding: 25px;
+    max-width: 550px;
     width: 90%;
     max-height: 80vh;
     overflow-y: auto;
@@ -436,19 +546,19 @@ header h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
 .modal-header h3 {
     color: #a855f7;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
 }
 
 .modal-close {
     background: none;
     border: none;
     color: #8892b0;
-    font-size: 2rem;
+    font-size: 1.8rem;
     cursor: pointer;
     transition: color 0.3s;
 }
@@ -459,22 +569,22 @@ header h1 {
 
 .modal-body p {
     color: #8892b0;
-    margin-bottom: 12px;
-    font-size: 0.9rem;
+    margin-bottom: 10px;
+    font-size: 0.85rem;
 }
 
 .modal-body textarea {
     width: 100%;
-    min-height: 100px;
-    padding: 14px;
+    min-height: 80px;
+    padding: 12px;
     border: 1px solid rgba(168, 85, 247, 0.3);
     background: rgba(0, 0, 0, 0.4);
     color: #ffffff;
     border-radius: 10px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     resize: vertical;
     outline: none;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     font-family: inherit;
 }
 
@@ -486,7 +596,7 @@ header h1 {
     background: linear-gradient(135deg, #a855f7, #6366f1) !important;
     border: none !important;
     color: #fff !important;
-    padding: 12px 24px !important;
+    padding: 11px 20px !important;
     font-weight: 600;
     width: 100%;
     justify-content: center;
@@ -498,17 +608,17 @@ header h1 {
 
 .ai-loading {
     text-align: center;
-    padding: 20px;
+    padding: 16px;
 }
 
 .spinner {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     border: 3px solid rgba(168, 85, 247, 0.2);
     border-top-color: #a855f7;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
-    margin: 0 auto 10px;
+    margin: 0 auto 8px;
 }
 
 @keyframes spin {
@@ -516,30 +626,31 @@ header h1 {
 }
 
 .ai-results {
-    margin-top: 20px;
+    margin-top: 16px;
 }
 
 .ai-results h4 {
     color: #64ffda;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
 }
 
 .ai-keyword-chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 15px;
+    gap: 6px;
+    margin-bottom: 12px;
 }
 
 .ai-chip {
-    padding: 8px 14px;
+    padding: 6px 12px;
     border: 1px solid rgba(168, 85, 247, 0.4);
     background: rgba(168, 85, 247, 0.1);
     color: #ccd6f6;
-    border-radius: 20px;
+    border-radius: 16px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 0.85rem;
+    transition: all 0.2s ease;
+    font-size: 0.8rem;
 }
 
 .ai-chip:hover {
@@ -550,7 +661,7 @@ header h1 {
     background: rgba(168, 85, 247, 0.35);
     border-color: #a855f7;
     color: #ffffff;
-    box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+    box-shadow: 0 0 8px rgba(168, 85, 247, 0.3);
 }
 
 .add-all-btn {
@@ -559,4 +670,17 @@ header h1 {
     color: #64ffda !important;
     width: 100%;
     justify-content: center;
+}
+
+/* ==========================================
+   Responsive
+   ========================================== */
+@media (max-width: 600px) {
+    body { padding: 12px; }
+    header h1 { font-size: 1.3rem; }
+    .section-card { padding: 14px; }
+    .compact-row { flex-direction: column; gap: 10px; align-items: flex-start; }
+    .custom-keyword-input { flex-direction: column; }
+    .modal-content { margin: 10px; padding: 18px; }
+    .output-actions { flex-direction: column; }
 }
