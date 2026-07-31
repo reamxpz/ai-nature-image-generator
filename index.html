@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Nature Image Generation Template</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI Nature Image Generation Template</h1>
+            <p class="subtitle">Select keywords, style, and generate your prompt</p>
+        </header>
+
+        <div class="form-section">
+            <!-- Keyword Section -->
+            <div class="section-card">
+                <h2>1. Select Keyword Category</h2>
+                <div class="category-buttons" id="categoryButtons"></div>
+            </div>
+
+            <div class="section-card" id="keywordSection" style="display:none;">
+                <h2>2. Select Keywords</h2>
+                <div class="keyword-chips" id="keywordChips"></div>
+                <div class="selected-keywords">
+                    <strong>Selected:</strong> <span id="selectedKeywords">None</span>
+                </div>
+            </div>
+
+
+            <!-- Style Section -->
+            <div class="section-card">
+                <h2>3. Select Image Style</h2>
+                <div class="style-options" id="styleOptions"></div>
+            </div>
+
+            <!-- Mood Section -->
+            <div class="section-card">
+                <h2>4. Select Mood</h2>
+                <div class="mood-options" id="moodOptions"></div>
+            </div>
+
+            <!-- Color Palette Section -->
+            <div class="section-card">
+                <h2>5. Select Color Palette</h2>
+                <div class="palette-options" id="paletteOptions"></div>
+            </div>
+
+            <!-- Number of Images -->
+            <div class="section-card">
+                <h2>6. Number of Images</h2>
+                <div class="number-input">
+                    <button class="num-btn" onclick="changeCount(-1)">-</button>
+                    <input type="number" id="imageCount" value="15" min="1" max="50">
+                    <button class="num-btn" onclick="changeCount(1)">+</button>
+                </div>
+            </div>
+
+            <!-- Generate Button -->
+            <button class="generate-btn" onclick="generateTemplate()">Generate Template</button>
+        </div>
+
+
+        <!-- Output Section -->
+        <div class="output-section" id="outputSection" style="display:none;">
+            <h2>Generated Template</h2>
+            <div class="output-actions">
+                <button class="copy-btn" onclick="copyTemplate()">Copy to Clipboard</button>
+            </div>
+            <pre id="templateOutput"></pre>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
