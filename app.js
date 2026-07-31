@@ -528,8 +528,6 @@ let customKeywords = [];
 let selectedStyle = "Premium Photorealistic Landscape Photography";
 let selectedMood = "Peaceful, Natural, Inspiring";
 let selectedPalette = "Natural Colors";
-let aiSuggestedKeywords = [];
-let selectedAiKeywords = [];
 
 // ==========================================
 // INITIALIZATION
@@ -539,7 +537,6 @@ document.addEventListener('DOMContentLoaded', () => {
     renderStyleDropdown();
     renderMoodDropdown();
     renderPaletteDropdown();
-    loadApiKey();
 
     // Enter key support for custom keyword input
     document.getElementById('customKeyword').addEventListener('keypress', (e) => {
@@ -733,8 +730,6 @@ function resetAll() {
     selectedStyle = "Premium Photorealistic Landscape Photography";
     selectedMood = "Peaceful, Natural, Inspiring";
     selectedPalette = "Natural Colors";
-    aiSuggestedKeywords = [];
-    selectedAiKeywords = [];
 
     // Reset UI
     renderCategories();
@@ -763,13 +758,32 @@ function resetAll() {
 // ==========================================
 // RANDOM KEYWORD
 // ==========================================
+function randomFromAll() {
+    // Get ALL keywords from ALL categories
+    const allKeywords = [];
+    Object.values(keywordData).forEach(keywords => {
+        allKeywords.push(...keywords);
+    });
+    const randomIndex = Math.floor(Math.random() * allKeywords.length);
+    selectedKeywords = [allKeywords[randomIndex]];
+
+    // Find which category it belongs to and show it
+    for (const [cat, keywords] of Object.entries(keywordData)) {
+        if (keywords.includes(selectedKeywords[0])) {
+            selectedCategory = cat;
+            break;
+        }
+    }
+    renderCategories();
+    document.getElementById('keywordSection').style.display = 'block';
+    renderKeywords();
+    updateSelectedDisplay();
+}
+
 function randomKeywords() {
     if (!selectedCategory) {
-        // Pick a random category first
-        const categories = Object.keys(keywordData);
-        selectedCategory = categories[Math.floor(Math.random() * categories.length)];
-        renderCategories();
-        document.getElementById('keywordSection').style.display = 'block';
+        randomFromAll();
+        return;
     }
 
     const keywords = keywordData[selectedCategory];
@@ -815,155 +829,6 @@ function renderCustomTags() {
         tag.innerHTML = `${kw} <span class="remove-tag" onclick="removeCustomKeyword('${kw.replace(/'/g, "\\'")}')">&times;</span>`;
         container.appendChild(tag);
     });
-}
-
-
-// ==========================================
-// GEMINI AI SUGGESTION
-// ==========================================
-function saveApiKey() {
-    const key = document.getElementById('geminiApiKey').value.trim();
-    if (!key) {
-        document.getElementById('apiKeyStatus').textContent = 'Please enter an API key.';
-        document.getElementById('apiKeyStatus').style.color = '#ff6b6b';
-        return;
-    }
-    localStorage.setItem('gemini_api_key', key);
-    document.getElementById('apiKeyStatus').textContent = 'API Key saved successfully!';
-    document.getElementById('apiKeyStatus').style.color = '#64ffda';
-    setTimeout(() => {
-        document.getElementById('apiKeyStatus').textContent = '';
-    }, 3000);
-}
-
-function loadApiKey() {
-    const key = localStorage.getItem('gemini_api_key');
-    if (key) {
-        document.getElementById('geminiApiKey').value = key;
-        document.getElementById('apiKeyStatus').textContent = 'API Key loaded from storage.';
-        document.getElementById('apiKeyStatus').style.color = '#64ffda';
-    }
-}
-
-function openAiModal() {
-    const key = localStorage.getItem('gemini_api_key');
-    if (!key) {
-        alert('Please save your Gemini API key first! (Scroll down to the API Settings section)');
-        return;
-    }
-    document.getElementById('aiModal').style.display = 'flex';
-    document.getElementById('aiResults').style.display = 'none';
-    document.getElementById('aiLoading').style.display = 'none';
-}
-
-function closeAiModal() {
-    document.getElementById('aiModal').style.display = 'none';
-}
-
-async function getAiSuggestions() {
-    const apiKey = localStorage.getItem('gemini_api_key');
-    if (!apiKey) {
-        alert('No API key found!');
-        return;
-    }
-
-    const userPrompt = document.getElementById('aiPromptInput').value.trim();
-    if (!userPrompt) {
-        alert('Please describe what kind of keywords you want!');
-        return;
-    }
-
-    // Show loading
-    document.getElementById('aiLoading').style.display = 'block';
-    document.getElementById('aiResults').style.display = 'none';
-    document.getElementById('aiGenerateBtn').disabled = true;
-
-    const systemPrompt = `You are a creative nature keyword generator for AI image generation. 
-The user wants unique nature-related keywords specifically about locations and scenes in the United States.
-Generate exactly 10 unique, specific, and descriptive keywords based on the user's request.
-Each keyword should be a short phrase (3-8 words) that describes a specific natural scene or element.
-Return ONLY a JSON array of strings, no other text. Example: ["keyword 1", "keyword 2", ...]`;
-
-    try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{
-                    parts: [{ text: `${systemPrompt}\n\nUser request: ${userPrompt}` }]
-                }],
-                generationConfig: {
-                    temperature: 1.0,
-                    maxOutputTokens: 1024
-                }
-            })
-        });
-
-        const data = await response.json();
-
-        if (data.error) {
-            throw new Error(data.error.message || 'API error occurred');
-        }
-
-        const text = data.candidates[0].content.parts[0].text;
-        // Parse JSON from response (handle markdown code blocks)
-        let keywords;
-        const jsonMatch = text.match(/\[[\s\S]*?\]/);
-        if (jsonMatch) {
-            keywords = JSON.parse(jsonMatch[0]);
-        } else {
-            throw new Error('Could not parse AI response');
-        }
-
-        aiSuggestedKeywords = keywords;
-        selectedAiKeywords = [];
-        renderAiKeywords();
-        document.getElementById('aiResults').style.display = 'block';
-
-    } catch (error) {
-        alert('Error: ' + error.message + '\n\nPlease check your API key and try again.');
-    } finally {
-        document.getElementById('aiLoading').style.display = 'none';
-        document.getElementById('aiGenerateBtn').disabled = false;
-    }
-}
-
-function renderAiKeywords() {
-    const container = document.getElementById('aiKeywordChips');
-    container.innerHTML = '';
-    aiSuggestedKeywords.forEach(kw => {
-        const chip = document.createElement('button');
-        chip.className = 'ai-chip' + (selectedAiKeywords.includes(kw) ? ' selected' : '');
-        chip.textContent = kw;
-        chip.onclick = () => toggleAiKeyword(kw);
-        container.appendChild(chip);
-    });
-}
-
-function toggleAiKeyword(kw) {
-    const idx = selectedAiKeywords.indexOf(kw);
-    if (idx > -1) {
-        selectedAiKeywords.splice(idx, 1);
-    } else {
-        selectedAiKeywords.push(kw);
-    }
-    renderAiKeywords();
-}
-
-function addAllAiKeywords() {
-    if (selectedAiKeywords.length === 0) {
-        alert('Please select at least one AI suggested keyword!');
-        return;
-    }
-    selectedAiKeywords.forEach(kw => {
-        if (!customKeywords.includes(kw)) {
-            customKeywords.push(kw);
-        }
-    });
-    renderCustomTags();
-    updateSelectedDisplay();
-    closeAiModal();
-    alert(`Added ${selectedAiKeywords.length} keyword(s) to your custom keywords!`);
 }
 
 

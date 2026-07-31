@@ -15,25 +15,30 @@
 
         <div class="form-section">
 
-            <!-- KEYWORD: Category + Keywords + Custom + AI in one compact card -->
+            <!-- KEYWORD Section -->
             <div class="section-card">
                 <div class="section-header" onclick="toggleSection('keywordContent')">
                     <h2>1. Keywords</h2>
                     <span class="toggle-icon" id="keywordContent-icon">▼</span>
                 </div>
                 <div class="section-body open" id="keywordContent">
+
+                    <!-- Quick Random from ALL -->
+                    <div class="random-all-section">
+                        <button class="action-btn random-all-btn" onclick="randomFromAll()">
+                            <span class="btn-icon">🎲</span> Random Keyword (All Categories)
+                        </button>
+                    </div>
+
                     <!-- Category Selection -->
-                    <label class="field-label">Category:</label>
+                    <label class="field-label">Or pick a category:</label>
                     <div class="category-buttons" id="categoryButtons"></div>
 
                     <!-- Keywords from category -->
                     <div id="keywordSection" style="display:none;">
                         <div class="keyword-actions">
                             <button class="action-btn random-btn" onclick="randomKeywords()">
-                                <span class="btn-icon">🎲</span> Random
-                            </button>
-                            <button class="action-btn ai-btn" onclick="openAiModal()">
-                                <span class="btn-icon">✨</span> AI Suggest
+                                <span class="btn-icon">🎲</span> Random from this category
                             </button>
                         </div>
                         <div class="keyword-chips" id="keywordChips"></div>
@@ -54,28 +59,25 @@
                 </div>
             </div>
 
-            <!-- STYLE + MOOD + PALETTE in one compact card with dropdowns -->
+            <!-- STYLE + MOOD + PALETTE -->
             <div class="section-card">
                 <div class="section-header" onclick="toggleSection('styleContent')">
                     <h2>2. Style & Mood</h2>
                     <span class="toggle-icon" id="styleContent-icon">▼</span>
                 </div>
                 <div class="section-body open" id="styleContent">
-                    <!-- Style -->
                     <label class="field-label">Image Style:</label>
                     <select id="styleSelect" class="select-input" onchange="selectedStyle = this.value"></select>
 
-                    <!-- Mood -->
                     <label class="field-label">Mood:</label>
                     <select id="moodSelect" class="select-input" onchange="selectedMood = this.value"></select>
 
-                    <!-- Color Palette -->
                     <label class="field-label">Color Palette:</label>
                     <select id="paletteSelect" class="select-input" onchange="selectedPalette = this.value"></select>
                 </div>
             </div>
 
-            <!-- NUMBER OF IMAGES - compact -->
+            <!-- NUMBER OF IMAGES -->
             <div class="section-card compact-row">
                 <h2>3. Number of Images</h2>
                 <div class="number-input">
@@ -89,23 +91,6 @@
             <button class="generate-btn" onclick="generateTemplate()">Generate Template</button>
         </div>
 
-        <!-- Gemini API Key Section (collapsible) -->
-        <div class="section-card api-key-card">
-            <div class="section-header" onclick="toggleSection('apiContent')">
-                <h2>Gemini API Settings</h2>
-                <span class="toggle-icon" id="apiContent-icon">►</span>
-            </div>
-            <div class="section-body" id="apiContent">
-                <p class="section-desc">Enter your Gemini API key to use AI keyword suggestions</p>
-                <div class="api-key-input">
-                    <input type="password" id="geminiApiKey" placeholder="Enter your Gemini API Key">
-                    <button class="action-btn save-key-btn" onclick="saveApiKey()">Save</button>
-                </div>
-                <p class="api-key-status" id="apiKeyStatus"></p>
-                <p class="section-desc">Get your free API key at <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a></p>
-            </div>
-        </div>
-
         <!-- Output Section -->
         <div class="output-section" id="outputSection" style="display:none;">
             <h2>Generated Template</h2>
@@ -114,32 +99,6 @@
                 <button class="reset-btn" onclick="resetAll()">🔄 Start Over</button>
             </div>
             <pre id="templateOutput"></pre>
-        </div>
-    </div>
-
-    <!-- AI Suggestion Modal -->
-    <div class="modal-overlay" id="aiModal" style="display:none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>✨ AI Keyword Suggestions (Gemini)</h3>
-                <button class="modal-close" onclick="closeAiModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <p>Describe what kind of nature keywords you want:</p>
-                <textarea id="aiPromptInput" placeholder="e.g. Give me unique nature keywords about rare geological formations in US national parks, or hidden waterfalls in Pacific Northwest..."></textarea>
-                <button class="action-btn ai-generate-btn" onclick="getAiSuggestions()" id="aiGenerateBtn">
-                    <span class="btn-icon">✨</span> Get AI Suggestions
-                </button>
-                <div class="ai-loading" id="aiLoading" style="display:none;">
-                    <div class="spinner"></div>
-                    <p>AI is thinking...</p>
-                </div>
-                <div class="ai-results" id="aiResults" style="display:none;">
-                    <h4>Suggested Keywords:</h4>
-                    <div class="ai-keyword-chips" id="aiKeywordChips"></div>
-                    <button class="action-btn add-all-btn" onclick="addAllAiKeywords()">Add All Selected</button>
-                </div>
-            </div>
         </div>
     </div>
 
