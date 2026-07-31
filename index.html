@@ -22,10 +22,29 @@
 
             <div class="section-card" id="keywordSection" style="display:none;">
                 <h2>2. Select Keywords</h2>
+                <div class="keyword-actions">
+                    <button class="action-btn random-btn" onclick="randomKeywords()">
+                        <span class="btn-icon">🎲</span> Random Keywords
+                    </button>
+                    <button class="action-btn ai-btn" onclick="openAiModal()">
+                        <span class="btn-icon">✨</span> AI Suggest (Gemini)
+                    </button>
+                </div>
                 <div class="keyword-chips" id="keywordChips"></div>
                 <div class="selected-keywords">
                     <strong>Selected:</strong> <span id="selectedKeywords">None</span>
                 </div>
+            </div>
+
+            <!-- Custom Keyword Input -->
+            <div class="section-card">
+                <h2>2.1 Custom Keyword (Optional)</h2>
+                <p class="section-desc">Type your own keyword if you want something specific</p>
+                <div class="custom-keyword-input">
+                    <input type="text" id="customKeyword" placeholder="e.g. Autumn leaves in Vermont forest, Glacier Bay Alaska...">
+                    <button class="action-btn add-custom-btn" onclick="addCustomKeyword()">+ Add</button>
+                </div>
+                <div class="custom-keyword-tags" id="customKeywordTags"></div>
             </div>
 
 
@@ -62,6 +81,18 @@
         </div>
 
 
+        <!-- Gemini API Key Section -->
+        <div class="section-card api-key-card">
+            <h2>Gemini API Settings</h2>
+            <p class="section-desc">Enter your Gemini API key to use AI keyword suggestions</p>
+            <div class="api-key-input">
+                <input type="password" id="geminiApiKey" placeholder="Enter your Gemini API Key">
+                <button class="action-btn save-key-btn" onclick="saveApiKey()">Save Key</button>
+            </div>
+            <p class="api-key-status" id="apiKeyStatus"></p>
+            <p class="section-desc">Get your free API key at <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a></p>
+        </div>
+
         <!-- Output Section -->
         <div class="output-section" id="outputSection" style="display:none;">
             <h2>Generated Template</h2>
@@ -69,6 +100,32 @@
                 <button class="copy-btn" onclick="copyTemplate()">Copy to Clipboard</button>
             </div>
             <pre id="templateOutput"></pre>
+        </div>
+    </div>
+
+    <!-- AI Suggestion Modal -->
+    <div class="modal-overlay" id="aiModal" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✨ AI Keyword Suggestions (Gemini)</h3>
+                <button class="modal-close" onclick="closeAiModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Describe what kind of nature keywords you want:</p>
+                <textarea id="aiPromptInput" placeholder="e.g. Give me unique nature keywords about rare geological formations in US national parks, or hidden waterfalls in Pacific Northwest..."></textarea>
+                <button class="action-btn ai-generate-btn" onclick="getAiSuggestions()" id="aiGenerateBtn">
+                    <span class="btn-icon">✨</span> Get AI Suggestions
+                </button>
+                <div class="ai-loading" id="aiLoading" style="display:none;">
+                    <div class="spinner"></div>
+                    <p>AI is thinking...</p>
+                </div>
+                <div class="ai-results" id="aiResults" style="display:none;">
+                    <h4>Suggested Keywords:</h4>
+                    <div class="ai-keyword-chips" id="aiKeywordChips"></div>
+                    <button class="action-btn add-all-btn" onclick="addAllAiKeywords()">Add All Selected</button>
+                </div>
+            </div>
         </div>
     </div>
 
